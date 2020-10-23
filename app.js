@@ -1,6 +1,7 @@
 const express = require("express");
 
 const morgan = require("morgan");
+const { environment } = require("./config");
 
 const routes = require("./routes");
 
@@ -21,7 +22,7 @@ app.use((req, res, next) => {
 
 //Error Middleware
 app.use((err, req, res, next) => {
-    if (process.env.NODE_ENV == "production") {
+    if (environment == "production") {
         //TODO: Log error to database
     } else {
         // console.error(err);
@@ -40,7 +41,7 @@ app.use((err, req, res, next) => {
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProduction = environment === "production";
     res.render("error", {
         title: "Server Error",
         message: isProduction ? null : err.message,
