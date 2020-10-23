@@ -1,4 +1,6 @@
 const express = require("express");
+const cookieParser = require('cookie-parser');
+
 
 const morgan = require("morgan");
 const { environment } = require("./config");
@@ -11,6 +13,7 @@ app.set("view engine", "pug");
 
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser())
 app.use(routes);
 
 //404 Catch All

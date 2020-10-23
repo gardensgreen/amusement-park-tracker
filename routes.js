@@ -1,7 +1,9 @@
 const express = require("express");
+const { route } = require("./app");
 const { environment } = require("./config");
 const db = require("./db/models");
-
+const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -32,6 +34,18 @@ router.get(
         res.render("park-detail", { park, title: "Park Detail" });
     })
 );
+
+router.get('/park/add', csrfProtection,(req, res)=>{
+    const park = db.Park.build()
+
+    res.render('park-add', { park, title: "Add Park", csrfToken:req.csrfToken()})
+
+})
+
+router.post('/park/add', csrfProtection, asyncHandler(async(req,res)=>{
+    const { parkName, city, provinceState, country, size, opened, description } = req.body
+    const park = db.Park.build({ parkName, city, provinceState, country, size, opened, description })
+}))
 
 if (environment !== "production") {
     router.get("/error-test", () => {
