@@ -23,6 +23,16 @@ router.get(
     })
 );
 
+router.get(
+    "/park/:id(\\d+)",
+    asyncHandler(async (req, res) => {
+        const parkId = parseInt(req.params.id, 10);
+        const park = await db.Park.findByPk(parkId);
+
+        res.render("park-detail", { park, title: "Park Detail" });
+    })
+);
+
 if (environment !== "production") {
     router.get("/error-test", () => {
         throw new Error("This is a test error.");
