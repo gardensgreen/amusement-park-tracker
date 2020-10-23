@@ -5,10 +5,8 @@ const db = require("../db/models");
 
 const app = require("../app.js");
 
-app.listen(port, () => console.log("Listening on port..." + port));
-
 db.sequelize
-    .authenticete()
+    .authenticate()
     .then(() => {
         console.log("Database connection success! Sequelize is ready to use.");
         app.listen(port, () => console.log(`Listening on port...${port}`));
